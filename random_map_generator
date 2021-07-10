@@ -1,0 +1,227 @@
+import random as rn
+from math import ceil, floor
+
+
+# Чистый биомусор
+# def create_room_size(square_room):
+#     min_side_size = 4
+#     max_side_size = square_room // 4
+#     x_room = random.randint(min_side_size, max_side_size)
+#     y_room = square_room // x_room
+#     return x_room, y_room
+#
+#
+# def find_room_square_and_amount(square_map):
+#     free_space = 0.6  # from 0 to 1
+#     square_to_take = ceil(square_map * (1 - free_space))
+#     every_type_of_room_square = square_to_take // 3
+#     l_rooms, m_rooms, s_rooms = 0, 0, 0
+#     l_square_arr, m_square_arr, s_square_arr = [], [], []
+#     add_space = 0
+#     for room_type in range(3):
+#         this_type_of_room_square = every_type_of_room_square
+#         while this_type_of_room_square >= 0:
+#             if room_type == 0:
+#                 room_square = random.randint(54, 81)
+#                 if this_type_of_room_square - room_square > 0:
+#                     this_type_of_room_square -= room_square
+#                     l_square_arr.append(room_square)
+#                     l_rooms += 1
+#                 else:
+#                     add_space += this_type_of_room_square
+#                     break
+#
+#             elif room_type == 1:
+#                 room_square = random.randint(36, 54)
+#                 if this_type_of_room_square - room_square > 0:
+#                     this_type_of_room_square -= room_square
+#                     m_square_arr.append(room_square)
+#                     m_rooms += 1
+#                 else:
+#                     add_space += this_type_of_room_square
+#                     break
+#
+#             elif room_type == 2:
+#                 room_square = random.randint(24, 36)
+#                 if this_type_of_room_square - room_square > 0:
+#                     this_type_of_room_square -= room_square
+#                     s_square_arr.append(room_square)
+#                     s_rooms += 1
+#                 else:
+#                     add_space += this_type_of_room_square
+#                     break
+#     while add_space >= 32:
+#         room_square = random.randint(24, 36)
+#         add_space -= room_square
+#         s_square_arr.append(room_square)
+#         s_rooms += 1
+#
+#     return l_rooms, m_rooms, s_rooms, square_to_take - add_space, l_square_arr, m_square_arr, s_square_arr
+#
+#
+# def create_room_size_arr(square_map):
+#     square_arr = []
+#     for ind in range(4, 7):
+#         for square in find_room_square_and_amount(square_map)[ind]:
+#             square_arr.append(square)
+#     room_coord_arr = []
+#
+#     for square in sorted(square_arr, reverse=True):
+#         room_coord_arr.append(create_room_size(square))
+#
+#     return room_coord_arr
+#
+#
+# def create_basic_map(x_map, y_map):
+#     basic_map_arr = []
+#     for ind_y in range(y_map):
+#         x_arr = []
+#         for ind_x in range(x_map):
+#             x_arr.append(0)  # "0" - equal to wall in map
+#         basic_map_arr.append(x_arr)
+#     return basic_map_arr
+#
+#
+# def create_room_coord(x_room, y_room, x_map, y_map):
+#     x_room_coord = random.randint(0, x_map - x_room)
+#     y_room_coord = random.randint(0, y_map - y_room)
+#     return x_room_coord, y_room_coord
+#
+#
+# def room_coord_checker(map_array, x_room_coord, y_room_coord, x_room, y_room):
+#     for y_ind in range(y_room_coord, y_room_coord + y_room):
+#         if y_ind == y_room_coord or y_ind == y_room_coord + y_room - 1 or y_ind % 4 == 0:
+#             for x_ind in range(x_room_coord, x_room_coord + x_room):
+#                 if x_ind == x_room_coord or x_ind == x_room_coord + x_room - 1 or x_ind % 4 == 0:
+#                     if map_array[x_ind][y_ind] == 1 or map_array[x_ind][y_ind] == 5:
+#                         return "bad_place"
+#     return "good_place"
+#
+#
+# def create_final_map_and_coord_arr(bsc_map_array, rm_sizes_arr, x_map, y_map):
+#     room_coord_array = []
+#     for xy in range(len(rm_sizes_arr)):
+#         done = 0
+#         while not done:
+#             possible_room_coordinates = (create_room_coord(rm_sizes_arr[xy][0], rm_sizes_arr[xy][1], x_map, y_map))
+#             response = room_coord_checker(bsc_map_array, possible_room_coordinates[0], possible_room_coordinates[1],
+#                                           rm_sizes_arr[xy][0], rm_sizes_arr[xy][1])
+#             print(response)
+#             if response == "good_place":
+#                 done = 1
+#                 for x_ind in range(possible_room_coordinates[0] - 1,
+#                                    possible_room_coordinates[0] + rm_sizes_arr[xy][0] + 1):
+#                     for y_ind in range(possible_room_coordinates[1] - 1,
+#                                        possible_room_coordinates[1] + rm_sizes_arr[xy][1] + 1):
+#                         if x_ind == possible_room_coordinates[0] - 1:
+#                             bsc_map_array[x_ind][y_ind] = 5
+#                         elif x_ind == possible_room_coordinates[0] + rm_sizes_arr[xy][0]:
+#                             bsc_map_array[x_ind][y_ind] = 5
+#                         elif y_ind == possible_room_coordinates[1] - 1 or y_ind == possible_room_coordinates[1] + \
+#                                 rm_sizes_arr[xy][1]:
+#                             bsc_map_array[x_ind][y_ind] = 5
+#                         else:
+#                             bsc_map_array[x_ind][y_ind] = 1
+#                 room_coord = [possible_room_coordinates[0], possible_room_coordinates[1]]
+#                 room_coord_array.append(room_coord)
+#
+#     return bsc_map_array, room_coord_array
+#
+#
+# def create_centers_arr(room_size_arr, room_coord_array):
+#     room_centers_arr = []
+#
+#     for room in range(len(room_size_arr)):
+#         room_center = [(ceil(room_size_arr[room][0] / 2) - 1 + room_coord_array[room][0]),
+#                        (ceil(room_size_arr[room][1] / 2) - 1 + room_coord_array[room][1])]
+#         room_centers_arr.append(room_center)
+#
+#     return room_centers_arr
+#
+#
+# def create_centers(center_arr, final_arr):
+#     for i in range(len(center_arr)):
+#         final_arr[center_arr[i][0]][center_arr[i][1]] = 2
+#     return final_arr
+#
+#
+# # есть не крит ошибки
+# def fulfil_roads(center, add_center, final_arr):
+#     center_y, center_x = center[0], center[1]
+#     add_center_y, add_center_x = add_center[0], add_center[1]
+#     for current_x in range(min(center_x, add_center_x + 1), max(center_x - 1, add_center_x + 1)):
+#         if final_arr[current_x][center_y] != 1 and final_arr[current_x][center_y] != 2:
+#             final_arr[current_x][center_y] = 3
+#     for current_y in range(min(center_y, add_center_y + 1), max(center_y, add_center_y + 1)):
+#         if final_arr[add_center_x][current_y] != 1 and final_arr[add_center_x][current_y] != 2:
+#             final_arr[add_center_x][current_y] = 3
+#     return final_arr
+#
+#
+# def create_roads(center_arr, final_arr):
+#     for ind in range(len(center_arr)):
+#         if ind != len(center_arr) - 1:
+#             fulfil_roads(center_arr[ind], center_arr[ind + 1], final_arr)
+#         else:
+#             fulfil_roads(center_arr[ind], center_arr[0], final_arr)
+#     return final_arr
+
+# Грязный биомусор
+class MapGenerator:
+    def __init__(self):
+        self.map = []
+        self.room_limits = 20
+        self.x_size = rn.randint(3, 5) * self.room_limits
+        self.y_size = rn.randint(3, 5) * self.room_limits
+        for ind_y in range(self.y_size):
+            line = []
+            for ind_x in range(self.x_size):
+                line.append(0)
+            self.map.append(line)
+        self.rooms_am = (self.x_size // self.room_limits) * (self.y_size // self.room_limits)
+        self.room_sizes_arr = []
+        for room in range(self.rooms_am):
+            self.room_sizes_arr.append([rn.randint(5, 10), rn.randint(5, 10)])
+        self.room_placeable_arr = []
+        for room in range(self.rooms_am):
+            self.room_placeable_arr.append(
+                (self.room_limits + 1 - self.room_sizes_arr[room][0]) * (
+                        self.room_limits + 1 - self.room_sizes_arr[room][1]))
+        self.strict_room_coord = []
+        for room in range(self.rooms_am):
+            cell = rn.randint(1, self.room_placeable_arr[room])
+            y = (cell - 1) // (self.room_limits + 1 - self.room_sizes_arr[room][0])
+            x = (cell - 1) - (y * (self.room_limits + 1 - self.room_sizes_arr[room][0]))
+            self.strict_room_coord.append([x, y])
+
+        for room in range(self.rooms_am):
+            y_add = room // (self.x_size // self.room_limits) * self.room_limits
+            x_add = room % (self.x_size // self.room_limits) * self.room_limits
+            for y in range(self.room_sizes_arr[room][1]):
+                for x in range(self.room_sizes_arr[room][0]):
+                    if y == 0 or y == self.room_sizes_arr[room][1] - 1 or x == 0 or x == self.room_sizes_arr[room][
+                        0] \
+                            - 1:
+                        self.map[self.strict_room_coord[room][1] + y_add + y][
+                            self.strict_room_coord[room][0] + x_add + x] = 2
+                    else:
+                        self.map[self.strict_room_coord[room][1] + y_add + y][
+                            self.strict_room_coord[room][0] + x_add + x] = 1
+
+        for y in range(self.y_size):
+            for x in range(self.x_size):
+                if y == 0 or x == 0 or y == self.y_size - 1 or x == self.x_size - 1:
+                    self.map[y][x] = 5
+
+    def check(self):
+        print(self.x_size, self.y_size)
+        print(self.rooms_am)
+        print(self.room_sizes_arr)
+        print(self.room_placeable_arr)
+        print(self.strict_room_coord)
+
+    def array(self):
+        return self.map
+
+# my_map = MapGenerator()
+# my_map.check()
