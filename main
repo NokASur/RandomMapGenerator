@@ -1,0 +1,30 @@
+import pygame as pg
+
+from random_map_generator import *
+
+my_map = MapGenerator()
+final_arr = my_map.array()
+white = [255, 255, 255]
+slight_yellow = [250, 240, 190]
+wall = [0, 0, 255]
+black = [0, 0, 0]
+pg.init()
+screen = pg.display.set_mode((1000, 1000))
+done = 0
+clock = pg.time.Clock()
+while not done:
+    for i in pg.event.get():
+        if i.type == pg.QUIT:
+            done = 1
+    for ind in range(len(final_arr)):
+        for ind1 in range(len(final_arr[ind])):
+            if final_arr[ind][ind1] == 0:
+                pg.draw.rect(screen, black, (ind * 10, ind1 * 10, 10, 10))
+            elif final_arr[ind][ind1] == 1:
+                pg.draw.rect(screen, white, (ind * 10, ind1 * 10, 10, 10))
+            elif final_arr[ind][ind1] == 5:
+                pg.draw.rect(screen, slight_yellow, (ind * 10, ind1 * 10, 10, 10))
+            elif final_arr[ind][ind1] == 2:
+                pg.draw.rect(screen, wall, (ind * 10, ind1 * 10, 10, 10))
+    pg.display.update()
+    clock.tick(60)
